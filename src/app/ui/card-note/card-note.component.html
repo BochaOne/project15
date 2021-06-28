@@ -1,0 +1,47 @@
+<div class="card-body" *ngIf="!modeEdit">
+    <h5 class="card-title">{{ note.noteTitle }}</h5>
+    <p class="card-text">{{ note.noteText }}</p>
+    <div class="card-text">Тип: {{ find(note.noteType) }}</div>
+    <div class="card-date">Создание: {{ note.noteDate }}</div>
+    <div class="card-date" *ngIf="note.noteDateUpdate != null">Редактрирование: {{ note.noteDateUpdate }}</div>
+    <button class="btn btn-primary btn-sm btn-block me-2" type="button" (click)="modeEdit = true">
+        Редактировать
+    </button>
+    <button class="btn btn-danger btn-sm btn-block " type="button" (click)="onDeleteNote()">
+        Удалить
+    </button>
+</div>
+<div class="card-body" *ngIf="modeEdit">
+    <form [formGroup]="noteForm" (ngSubmit)="onEditNote()">
+        <input
+            type="text" 
+            class="form-control" 
+            formControlName = "noteTitle"
+            [ngClass]="{ 'has-error': noteForm.get('noteTitle')!.invalid }"
+        >
+        <textarea 
+            type="text" 
+            class="form-control" 
+            formControlName = "noteText"
+            [ngClass]="{ 'has-error': noteForm.get('noteText')!.invalid }"
+        ></textarea>
+        <select 
+            class="form-select" 
+            type="text"
+            formControlName="noteType"
+            [ngClass]="{
+                'has-error':
+                    noteForm.get('noteType')!.invalid &&
+                    noteForm.get('noteType')!.touched
+            }"
+        >
+            <option *ngFor="let type of typeList" value = "{{ type.id }}">{{ type.noteType }}</option>
+        </select>
+        <button class="btn btn-primary btn-sm btn-block me-2" type="submit" [disabled]="noteForm.invalid">
+            Сохранить
+        </button>
+        <button class="btn btn-danger btn-sm btn-block " type="button" (click)="onDeleteNote()">
+            Удалить
+        </button>
+    </form>
+</div>

@@ -1,0 +1,73 @@
+<form [formGroup]="noteForm" (ngSubmit) = "onAddNote()">
+    <div class="form-group">
+        <label for="title" class="control-label">Наименование заметки:</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            id="noteTitle" 
+            placeholder="Название" 
+            formControlName="noteTitle"
+            [ngClass]="{
+                'has-error':
+                    noteForm.get('noteTitle')!.invalid &&
+                    noteForm.get('noteTitle')!.touched
+            }"
+        >
+        <small class="form-text text-nuted">
+            Обязательное поле, длиной 50 символов
+        </small>
+    </div>
+    <div class="form-group">
+        <label for="about" class="control-label">Описание:</label>
+        <textarea 
+            type="text" 
+            class="form-control" 
+            id="noteText" 
+            placeholder="Содержание" 
+            formControlName="noteText"
+            [ngClass]="{
+                'has-error':
+                    noteForm.get('noteText')!.invalid &&
+                    noteForm.get('noteText')!.touched
+            }"
+        ></textarea>
+        <small class="form-text text-nuted">
+            Обязательное поле, длиной 200 символов
+        </small>
+    </div>
+    <div class="form-group">
+        <label for="about" class="control-label">Тип заметки:</label>
+        <select 
+            class="form-select" 
+            aria-label="Default select example"
+            type="text"
+            id="noteType" 
+            formControlName="noteType"
+            [ngClass]="{
+                'has-error':
+                    noteForm.get('noteType')!.invalid &&
+                    noteForm.get('noteType')!.touched
+            }"
+        >
+            <option *ngFor="let type of typeList" value = "{{ type.id }}">{{ type.noteType }}</option>
+          </select>
+    </div>
+    <form [formGroup]="typeForm">
+        <div class="form-group my-3">
+            <input type="text" class="col-12 form-control form-control-sm" formControlName="noteType">
+            <div class="mt-1">
+                <button class="col-3 btn btn-sm btn-primary btn-block me-2" type="button" (click)="onAddType()" [disabled]="typeForm.invalid">Добавить тип заметки</button>
+                <button class="col-3 btn btn-sm btn-danger btn-block" type="button" (click)="onDeleteType()">Удалить тип заметки</button>
+            </div>
+        </div>
+    </form>
+    <div class="mt-2 mb-3">
+        <button 
+            class="btn btn-primary btn-lg btn-block" 
+            type="submit" 
+            [disabled]="noteForm.invalid"
+        >
+            Добавить
+        </button>
+    </div>
+</form>
